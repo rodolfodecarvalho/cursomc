@@ -1,7 +1,7 @@
 package com.rodolfoguerra.cursomc.controllers;
 
 import com.rodolfoguerra.cursomc.model.Category;
-import com.rodolfoguerra.cursomc.services.CategoryServiceImp;
+import com.rodolfoguerra.cursomc.services.imp.CategoryServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
