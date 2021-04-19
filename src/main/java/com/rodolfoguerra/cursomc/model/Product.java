@@ -13,7 +13,7 @@ import java.util.List;
 @ToString
 @EqualsAndHashCode
 @Data
-public class Category implements Serializable {
+public class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -23,11 +23,15 @@ public class Category implements Serializable {
 
     private String name;
 
-    @ManyToMany(mappedBy = "categories")
-    private List<Product> products = new ArrayList<>();
+    private Double price;
 
-    public Category(Long id, String name) {
+    @ManyToMany
+    @JoinTable(name = "Product_Category", joinColumns = @JoinColumn(name = "productId"), inverseJoinColumns = @JoinColumn(name = "categoryId"))
+    private List<Category> categories = new ArrayList<>();
+
+    public Product(Long id, String name, double price) {
         this.id = id;
         this.name = name;
+        this.price = price;
     }
 }
