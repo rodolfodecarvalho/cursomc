@@ -1,5 +1,6 @@
 package com.rodolfoguerra.cursomc.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.rodolfoguerra.cursomc.model.enums.ClientType;
 import lombok.*;
 
@@ -33,6 +34,7 @@ public class Client implements Serializable {
     private Integer type;
 
     @OneToMany(mappedBy = "client")
+    @JsonManagedReference
     private List<Address> addresses = new ArrayList<>();
 
     @ElementCollection

@@ -1,5 +1,6 @@
 package com.rodolfoguerra.cursomc.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.rodolfoguerra.cursomc.model.enums.ClientType;
 import lombok.*;
 
@@ -32,6 +33,7 @@ public class Address implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "client_id")
+    @JsonBackReference
     private Client client;
 
     @ManyToOne
