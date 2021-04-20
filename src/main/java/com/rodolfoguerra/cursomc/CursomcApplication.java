@@ -1,13 +1,8 @@
 package com.rodolfoguerra.cursomc;
 
-import com.rodolfoguerra.cursomc.model.Category;
-import com.rodolfoguerra.cursomc.model.City;
-import com.rodolfoguerra.cursomc.model.Estado;
-import com.rodolfoguerra.cursomc.model.Product;
-import com.rodolfoguerra.cursomc.repositories.CategoryRepository;
-import com.rodolfoguerra.cursomc.repositories.CityRepository;
-import com.rodolfoguerra.cursomc.repositories.EstadoRepository;
-import com.rodolfoguerra.cursomc.repositories.ProductRepository;
+import com.rodolfoguerra.cursomc.model.*;
+import com.rodolfoguerra.cursomc.model.enums.ClientType;
+import com.rodolfoguerra.cursomc.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -30,6 +25,12 @@ public class CursomcApplication implements CommandLineRunner {
 
     @Autowired
     private EstadoRepository estadoRepository;
+
+    @Autowired
+    private ClientRepository clientRepository;
+
+    @Autowired
+    private AddressRepository addressRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(CursomcApplication.class, args);
@@ -54,11 +55,8 @@ public class CursomcApplication implements CommandLineRunner {
         categoryRepository.saveAll(Arrays.asList(cat1, cat2));
         productRepository.saveAll(Arrays.asList(p1, p2, p3));
 
-        Estado est1 = new Estado();
-        est1.setName("Minas Gerais");
-
-        Estado est2 = new Estado();
-        est2.setName("São Paulo");
+        Estado est1 = new Estado(null, "Minas Gerais");
+        Estado est2 = new Estado(null, "São Paulo");
 
         City c1 = new City(null, "Urbelandia", est1);
         City c2 = new City(null, "São Paulo", est2);
@@ -69,5 +67,16 @@ public class CursomcApplication implements CommandLineRunner {
 
         estadoRepository.saveAll(Arrays.asList(est1, est2));
         cityRepository.saveAll(Arrays.asList(c1, c2, c3));
+
+        Client cli1 = new Client(null, "Maria", "maria@email", "12345678996", ClientType.PESSOA_FISICA);
+
+        Address address1 = new Address(null, "Rua Flores", "123", "casa", "Al", "12.456.879", cli1, c1);
+        Address address2 = new Address(null, "Rua Flores", "123", "casa", "Al", "12.456.879", cli1, c2);
+
+        cli1.getAddresses().addAll(Arrays.asList(address1, address2));
+        cli1.getPhones().addAll(Arrays.asList("123456", "54645"));
+
+        clientRepository.save(cli1);
+        addressRepository.saveAll(Arrays.asList(address1,address2));
     }
 }

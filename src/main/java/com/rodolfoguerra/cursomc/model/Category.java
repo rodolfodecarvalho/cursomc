@@ -29,6 +29,7 @@ public class Category implements Serializable {
     private List<Product> products = new ArrayList<>();
 
     public Category(Long id, String name) {
+        super();
         this.id = id;
         this.name = name;
     }
