@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @NoArgsConstructor
@@ -12,7 +13,7 @@ import java.io.Serializable;
 @ToString
 @EqualsAndHashCode
 @Data
-public class Address implements Serializable {
+public class Pedido implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -20,15 +21,10 @@ public class Address implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String logradouro;
+    private Date date;
 
-    private String number;
-
-    private String complemento;
-
-    private String bairro;
-
-    private String zipCode;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")
+    private Pagamento pagamento;
 
     @ManyToOne
     @JoinColumn(name = "client_id")
@@ -36,6 +32,14 @@ public class Address implements Serializable {
     private Client client;
 
     @ManyToOne
-    @JoinColumn(name = "city_id")
-    private City city;
+    @JoinColumn(name = "endereco_id")
+    private Address enderecoDeEntrega;
+
+    public Pedido(Long id, Date date, Client client, Address enderecoDeEntrega) {
+        super();
+        this.id = id;
+        this.date = date;
+        this.client = client;
+        this.enderecoDeEntrega = enderecoDeEntrega;
+    }
 }

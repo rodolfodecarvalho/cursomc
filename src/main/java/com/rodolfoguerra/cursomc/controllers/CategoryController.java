@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/categories")
 public class CategoryController {
 
-    @Autowired
-    private CategoryServiceImp categoryServiceImp;
+    private final CategoryServiceImp categoryServiceImp;
+
+    public CategoryController(CategoryServiceImp categoryServiceImp) {
+        this.categoryServiceImp = categoryServiceImp;
+    }
 
     @GetMapping(path = {"/{id}"})
     public ResponseEntity<?> findById(@PathVariable(value = "id") final Long id) {

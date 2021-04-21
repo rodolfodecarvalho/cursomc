@@ -6,7 +6,7 @@ import lombok.Getter;
 public enum ClientType {
     PESSOA_FISICA(0), PESSOA_JURIDICA(1);
 
-    private int code;
+    private final int code;
 
     ClientType(int code) {
         this.code = code;
@@ -16,8 +16,6 @@ public enum ClientType {
         if (code == null) {
             return null;
         }
-
-//        return Arrays.stream(ClientType.values()).filter(clientType -> code.equals(clientType.getCode())).findFirst();
 
         for (ClientType clientType : ClientType.values()) {
             if (code.equals(clientType.getCode())) {

@@ -12,8 +12,11 @@ import java.util.Optional;
 @Service(value = "CategoryService")
 public class CategoryServiceImp implements CategoryService {
 
-    @Autowired
-    private CategoryRepository repository;
+    private final CategoryRepository repository;
+
+    public CategoryServiceImp(CategoryRepository repository) {
+        this.repository = repository;
+    }
 
     public Category findById(Long id) {
         Optional<Category> obj = repository.findById(id);

@@ -12,8 +12,11 @@ import java.util.Optional;
 @Service("ClientService")
 public class ClientServiceImp implements ClientService {
 
-    @Autowired
-    private ClientRepository clientRepository;
+    private final ClientRepository clientRepository;
+
+    public ClientServiceImp(ClientRepository clientRepository) {
+        this.clientRepository = clientRepository;
+    }
 
     @Override
     public Client findById(Long id) throws ObjectNotFoundException {

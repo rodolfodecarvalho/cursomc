@@ -41,6 +41,10 @@ public class Client implements Serializable {
     @CollectionTable(name = "Phones")
     private Set<String> phones = new HashSet<>();
 
+    @OneToMany(mappedBy = "client")
+    @JsonManagedReference
+    private List<Pedido> pedidos = new ArrayList<>();
+
     public Client(Long id, String name, String email, String cpfOrCnpj, ClientType type) {
         super();
         this.id = id;

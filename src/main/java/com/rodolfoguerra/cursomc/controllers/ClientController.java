@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/clients")
 public class ClientController {
 
-    @Autowired
-    private ClientServiceImp serviceImp;
+    private final ClientServiceImp serviceImp;
+
+    public ClientController(ClientServiceImp serviceImp) {
+        this.serviceImp = serviceImp;
+    }
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<?> findById(@PathVariable(value = "id") final Long id) {
