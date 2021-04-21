@@ -1,6 +1,5 @@
 package com.rodolfoguerra.cursomc.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,6 +23,5 @@ public class City implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "estado_id")
-    @JsonManagedReference
     private Estado estado;
 }

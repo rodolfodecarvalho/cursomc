@@ -1,6 +1,6 @@
 package com.rodolfoguerra.cursomc.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -32,7 +32,7 @@ public class Address implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "client_id")
-    @JsonBackReference
+    @JsonIgnore
     private Client client;
 
     @ManyToOne

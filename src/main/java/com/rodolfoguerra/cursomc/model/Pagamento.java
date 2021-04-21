@@ -1,6 +1,6 @@
 package com.rodolfoguerra.cursomc.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rodolfoguerra.cursomc.model.enums.EstadoPagamento;
 import lombok.*;
 
@@ -26,7 +26,7 @@ public abstract class Pagamento implements Serializable {
     @OneToOne
     @JoinColumn(name = "pedido_id")
     @MapsId
-    @JsonBackReference
+    @JsonIgnore
     private Pedido pedido;
 
     public Pagamento(Long id, EstadoPagamento estado, Pedido pedido) {

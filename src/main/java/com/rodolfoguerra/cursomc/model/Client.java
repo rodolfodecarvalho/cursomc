@@ -1,7 +1,6 @@
 package com.rodolfoguerra.cursomc.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rodolfoguerra.cursomc.model.enums.ClientType;
 import lombok.*;
 
@@ -35,7 +34,6 @@ public class Client implements Serializable {
     private Integer type;
 
     @OneToMany(mappedBy = "client")
-    @JsonManagedReference
     private List<Address> addresses = new ArrayList<>();
 
     @ElementCollection
@@ -43,7 +41,7 @@ public class Client implements Serializable {
     private Set<String> phones = new HashSet<>();
 
     @OneToMany(mappedBy = "client")
-    @JsonBackReference
+    @JsonIgnore
     private List<Pedido> pedidos = new ArrayList<>();
 
     public Client(Long id, String name, String email, String cpfOrCnpj, ClientType type) {
