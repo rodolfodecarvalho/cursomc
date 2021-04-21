@@ -1,7 +1,7 @@
 package com.rodolfoguerra.cursomc.controllers;
 
-import com.rodolfoguerra.cursomc.model.Client;
-import com.rodolfoguerra.cursomc.services.ClientService;
+import com.rodolfoguerra.cursomc.model.Pedido;
+import com.rodolfoguerra.cursomc.services.PedidoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,18 +9,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/clients")
-public class ClientController {
+@RequestMapping("/pedidos")
+public class PedidoController {
 
-    private final ClientService serviceImp;
+    private final PedidoService pedidoService;
 
-    public ClientController(ClientService serviceImp) {
-        this.serviceImp = serviceImp;
+    public PedidoController(PedidoService pedidoService) {
+        this.pedidoService = pedidoService;
     }
 
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = {"/{id}"})
     public ResponseEntity<?> findById(@PathVariable(value = "id") final Long id) {
-        Client client = serviceImp.findById(id);
-        return ResponseEntity.ok(client);
+        Pedido pedido = pedidoService.findById(id);
+        return ResponseEntity.ok(pedido);
     }
 }

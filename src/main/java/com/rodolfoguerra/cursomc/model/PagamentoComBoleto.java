@@ -1,5 +1,6 @@
 package com.rodolfoguerra.cursomc.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.rodolfoguerra.cursomc.model.enums.EstadoPagamento;
 import lombok.*;
 
@@ -16,8 +17,10 @@ public class PagamentoComBoleto extends Pagamento {
 
     private static final long serialVersionUID = 1L;
 
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date dataVencimento;
 
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date dataPagamento;
 
     public PagamentoComBoleto(Long id, EstadoPagamento estado, Pedido pedido, Date dataVencimento, Date dataPagamento) {
