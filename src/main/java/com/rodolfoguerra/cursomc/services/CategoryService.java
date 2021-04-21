@@ -20,4 +20,8 @@ public class CategoryService  {
         Optional<Category> obj = repository.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundException("Object not found Id:" + id + ", Type: " + Category.class.getTypeName()));
     }
+
+    public Category save(Category obj) {
+        return repository.save(obj);
+    }
 }

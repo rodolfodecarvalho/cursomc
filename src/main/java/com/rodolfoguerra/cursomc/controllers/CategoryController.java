@@ -2,11 +2,14 @@ package com.rodolfoguerra.cursomc.controllers;
 
 import com.rodolfoguerra.cursomc.model.Category;
 import com.rodolfoguerra.cursomc.services.CategoryService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/categories")
@@ -22,5 +25,14 @@ public class CategoryController {
     public ResponseEntity<?> findById(@PathVariable(value = "id") final Long id) {
         Category category = categoryService.findById(id);
         return ResponseEntity.ok(category);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Void> save(@Validated @RequestBody Category obj){
+        obj = categoryService.save(obj);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+
+        return ResponseEntity.created(uri).build();
     }
 }
