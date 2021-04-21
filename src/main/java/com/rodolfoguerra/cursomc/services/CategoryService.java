@@ -2,7 +2,9 @@ package com.rodolfoguerra.cursomc.services;
 
 import com.rodolfoguerra.cursomc.model.Category;
 import com.rodolfoguerra.cursomc.repositories.CategoryRepository;
+import com.rodolfoguerra.cursomc.services.exceptions.DataIntegrityException;
 import com.rodolfoguerra.cursomc.services.exceptions.ObjectNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -25,8 +27,17 @@ public class CategoryService  {
         return repository.save(obj);
     }
 
-    public Category update(Category obj) {
+    public void update(Category obj) {
         findById(obj.getId());
-        return repository.save(obj);
+        repository.save(obj);
+    }
+
+    public void deleteById(Long id) {
+        findById(id);
+        try {
+            repository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DataIntegrityException("You cannot delete a category that has a product");
+        }
     }
 }
