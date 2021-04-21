@@ -19,7 +19,7 @@ public class PedidoController {
     }
 
     @GetMapping(path = {"/{id}"})
-    public ResponseEntity<?> findById(@PathVariable(value = "id") final Long id) {
+    public ResponseEntity<Pedido> findById(@PathVariable(value = "id") final Long id) {
         Pedido pedido = pedidoService.findById(id);
         return ResponseEntity.ok(pedido);
     }

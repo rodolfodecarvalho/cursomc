@@ -19,7 +19,7 @@ public class ClientController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<?> findById(@PathVariable(value = "id") final Long id) {
+    public ResponseEntity<Client> findById(@PathVariable(value = "id") final Long id) {
         Client client = serviceImp.findById(id);
         return ResponseEntity.ok(client);
     }
