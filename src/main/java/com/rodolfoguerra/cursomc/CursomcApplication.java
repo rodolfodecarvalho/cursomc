@@ -52,6 +52,14 @@ public class CursomcApplication implements CommandLineRunner {
     public void run(String... args) throws ParseException {
         Category cat1 = new Category(null, "Informática");
         Category cat2 = new Category(null, "Escritório");
+        Category cat3 = new Category(null, "Quarto");
+        Category cat4 = new Category(null, "Armazem");
+        Category cat5 = new Category(null, "Beleza");
+        Category cat6 = new Category(null, "Padaria");
+        Category cat7 = new Category(null, "Eletronicos");
+        Category cat8 = new Category(null, "Mercado");
+        Category cat9 = new Category(null, "Cama");
+        Category cat10 = new Category(null, "Telefonia");
 
         Product p1 = new Product(null, "Computador", 200.00);
         Product p2 = new Product(null, "Impressora", 500.00);
@@ -64,7 +72,7 @@ public class CursomcApplication implements CommandLineRunner {
         p2.getCategories().addAll(Arrays.asList(cat1, cat2));
         p3.getCategories().addAll(Collections.singletonList(cat1));
 
-        categoryRepository.saveAll(Arrays.asList(cat1, cat2));
+        categoryRepository.saveAll(Arrays.asList(cat1, cat2, cat3, cat4, cat5, cat6, cat7, cat8, cat9, cat10));
         productRepository.saveAll(Arrays.asList(p1, p2, p3));
 
         Estado est1 = new Estado(null, "Minas Gerais");

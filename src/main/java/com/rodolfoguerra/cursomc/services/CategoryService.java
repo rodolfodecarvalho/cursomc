@@ -6,6 +6,9 @@ import com.rodolfoguerra.cursomc.repositories.CategoryRepository;
 import com.rodolfoguerra.cursomc.services.exceptions.DataIntegrityException;
 import com.rodolfoguerra.cursomc.services.exceptions.ObjectNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,7 +16,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class CategoryService  {
+public class CategoryService {
 
     private final CategoryRepository repository;
 
@@ -25,6 +28,13 @@ public class CategoryService  {
         List<Category> list = repository.findAll();
 //        return list.stream().map(category -> new CategoryDTO(category)).collect(Collectors.toList());
         return list.stream().map(CategoryDTO::new).collect(Collectors.toList());
+    }
+
+    public Page<CategoryDTO> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+
+        Page<Category> all = repository.findAll(pageRequest);
+        return all.map(CategoryDTO::new);
     }
 
     public Category findById(Long id) {
