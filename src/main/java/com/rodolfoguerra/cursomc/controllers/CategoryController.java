@@ -1,5 +1,6 @@
 package com.rodolfoguerra.cursomc.controllers;
 
+import com.rodolfoguerra.cursomc.dto.CategoryDTO;
 import com.rodolfoguerra.cursomc.model.Category;
 import com.rodolfoguerra.cursomc.services.CategoryService;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/categories")
@@ -18,6 +20,12 @@ public class CategoryController {
 
     public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
+    }
+
+    @GetMapping(path = {"/"})
+    public ResponseEntity<List<CategoryDTO>> findAll() {
+        List<CategoryDTO> list = categoryService.findAll();
+        return ResponseEntity.ok(list);
     }
 
     @GetMapping(path = {"/{id}"})

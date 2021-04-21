@@ -1,5 +1,6 @@
 package com.rodolfoguerra.cursomc.services;
 
+import com.rodolfoguerra.cursomc.dto.CategoryDTO;
 import com.rodolfoguerra.cursomc.model.Category;
 import com.rodolfoguerra.cursomc.repositories.CategoryRepository;
 import com.rodolfoguerra.cursomc.services.exceptions.DataIntegrityException;
@@ -7,7 +8,9 @@ import com.rodolfoguerra.cursomc.services.exceptions.ObjectNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryService  {
@@ -16,6 +19,12 @@ public class CategoryService  {
 
     public CategoryService(CategoryRepository repository) {
         this.repository = repository;
+    }
+
+    public List<CategoryDTO> findAll() {
+        List<Category> list = repository.findAll();
+//        return list.stream().map(category -> new CategoryDTO(category)).collect(Collectors.toList());
+        return list.stream().map(CategoryDTO::new).collect(Collectors.toList());
     }
 
     public Category findById(Long id) {
