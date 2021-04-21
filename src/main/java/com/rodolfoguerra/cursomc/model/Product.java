@@ -6,13 +6,15 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(of = "id")
 @Data
 public class Product implements Serializable {
 
@@ -31,10 +33,22 @@ public class Product implements Serializable {
     @JoinTable(name = "Product_Category", joinColumns = @JoinColumn(name = "productId"), inverseJoinColumns = @JoinColumn(name = "categoryId"))
     private List<Category> categories = new ArrayList<>();
 
+    @OneToMany(mappedBy = "id.product")
+    private Set<ItemPedido> itens = new HashSet<>();
+
     public Product(Long id, String name, double price) {
         super();
         this.id = id;
         this.name = name;
         this.price = price;
+    }
+
+    public List<Pedido> getPedidos() {
+        List<Pedido> pedidos = new ArrayList<>();
+        for (ItemPedido x : itens) {
+            pedidos.add(x.getPedido());
+        }
+
+        return pedidos;
     }
 }
