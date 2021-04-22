@@ -59,4 +59,8 @@ public class CategoryService {
             throw new DataIntegrityException("You cannot delete a category that has a product");
         }
     }
+
+    public Category fromDTO(CategoryDTO categoryDTO) {
+        return new Category(categoryDTO.getId(), categoryDTO.getName());
+    }
 }

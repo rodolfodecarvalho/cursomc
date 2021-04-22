@@ -6,10 +6,10 @@ import com.rodolfoguerra.cursomc.services.CategoryService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -47,17 +47,19 @@ public class CategoryController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> save(@Validated @RequestBody Category obj) {
-        obj = categoryService.save(obj);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+    public ResponseEntity<Void> save(@Valid @RequestBody CategoryDTO categoryDTO) {
+        Category category = categoryService.fromDTO(categoryDTO);
+        category = categoryService.save(category);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(category.getId()).toUri();
 
         return ResponseEntity.created(uri).build();
     }
 
     @PutMapping(value = "{id}")
-    public ResponseEntity<Void> update(@RequestBody Category obj, @PathVariable(value = "id") final Long id) {
-        obj.setId(id);
-        categoryService.update(obj);
+    public ResponseEntity<Void> update(@Valid @RequestBody CategoryDTO categoryDTO, @PathVariable(value = "id") final Long id) {
+        Category category = categoryService.fromDTO(categoryDTO);
+        category.setId(id);
+        categoryService.update(category);
         return ResponseEntity.noContent().build();
     }
 
