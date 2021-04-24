@@ -38,17 +38,17 @@ public class CategoryService {
     }
 
     public Category findById(Long id) {
-        Optional<Category> obj = repository.findById(id);
-        return obj.orElseThrow(() -> new ObjectNotFoundException("Object not found Id:" + id + ", Type: " + Category.class.getTypeName()));
+        Optional<Category> category = repository.findById(id);
+        return category.orElseThrow(() -> new ObjectNotFoundException("Category not found Id:" + id + ", Type: " + Category.class.getTypeName()));
     }
 
-    public Category save(Category obj) {
-        return repository.save(obj);
+    public Category save(Category category) {
+        return repository.save(category);
     }
 
-    public void update(Category obj) {
-        findById(obj.getId());
-        repository.save(obj);
+    public void update(Category category) {
+        findById(category.getId());
+        repository.save(category);
     }
 
     public void deleteById(Long id) {
