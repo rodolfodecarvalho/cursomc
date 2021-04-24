@@ -1,7 +1,12 @@
 package com.rodolfoguerra.cursomc.services;
 
 import com.rodolfoguerra.cursomc.dto.ClientDTO;
+import com.rodolfoguerra.cursomc.dto.ClientNewDTO;
+import com.rodolfoguerra.cursomc.model.Address;
+import com.rodolfoguerra.cursomc.model.City;
 import com.rodolfoguerra.cursomc.model.Client;
+import com.rodolfoguerra.cursomc.model.enums.ClientType;
+import com.rodolfoguerra.cursomc.repositories.AddressRepository;
 import com.rodolfoguerra.cursomc.repositories.ClientRepository;
 import com.rodolfoguerra.cursomc.services.exceptions.DataIntegrityException;
 import com.rodolfoguerra.cursomc.services.exceptions.ObjectNotFoundException;
@@ -10,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -18,8 +24,11 @@ public class ClientService {
 
     private final ClientRepository repository;
 
-    public ClientService(ClientRepository repository) {
+    private final AddressRepository addressRepository;
+
+    public ClientService(ClientRepository repository, AddressRepository addressRepository) {
         this.repository = repository;
+        this.addressRepository = addressRepository;
     }
 
     public Client findById(Long id) throws ObjectNotFoundException {
@@ -34,8 +43,12 @@ public class ClientService {
         return all.map(ClientDTO::new);
     }
 
+    @Transactional
     public Client save(Client client) {
-        return repository.save(client);
+        client.setId(null);
+        repository.save(client);
+        addressRepository.saveAll(client.getAddresses());
+        return client;
     }
 
     public void update(Client client) {
@@ -60,5 +73,21 @@ public class ClientService {
 
     public Client fromDTO(ClientDTO clientDTO) {
         return new Client(clientDTO.getId(), clientDTO.getName(), clientDTO.getEmail(), null, null);
+    }
+
+    public Client fromDTO(ClientNewDTO clientNewDTO) {
+        Client client = new Client(null, clientNewDTO.getName(), clientNewDTO.getEmail(), clientNewDTO.getCpfOrCnpj(), ClientType.toEnum(clientNewDTO.getType()));
+        City city = new City(clientNewDTO.getCityId(), null, null);
+        Address address = new Address(null, clientNewDTO.getLogradouro(), clientNewDTO.getNumber(), clientNewDTO.getComplemento(), clientNewDTO.getBairro(), clientNewDTO.getZipCode(), client, city);
+        client.getAddresses().add(address);
+        client.getPhones().add(clientNewDTO.getPhone1());
+        if (clientNewDTO.getPhone2() != null) {
+            client.getPhones().add(clientNewDTO.getPhone2());
+        }
+        if (clientNewDTO.getPhone3() != null) {
+            client.getPhones().add(clientNewDTO.getPhone3());
+        }
+
+        return client;
     }
 }

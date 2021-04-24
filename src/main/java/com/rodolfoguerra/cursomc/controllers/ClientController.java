@@ -1,6 +1,7 @@
 package com.rodolfoguerra.cursomc.controllers;
 
 import com.rodolfoguerra.cursomc.dto.ClientDTO;
+import com.rodolfoguerra.cursomc.dto.ClientNewDTO;
 import com.rodolfoguerra.cursomc.model.Client;
 import com.rodolfoguerra.cursomc.services.ClientService;
 import org.springframework.data.domain.Page;
@@ -40,7 +41,7 @@ public class ClientController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> save(@Valid @RequestBody ClientDTO clientDTO) {
+    public ResponseEntity<Void> save(@Valid @RequestBody ClientNewDTO clientDTO) {
         Client client = clientService.fromDTO(clientDTO);
         client = clientService.save(client);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(client.getId()).toUri();
