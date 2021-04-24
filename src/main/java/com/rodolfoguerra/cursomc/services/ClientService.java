@@ -6,7 +6,6 @@ import com.rodolfoguerra.cursomc.model.Address;
 import com.rodolfoguerra.cursomc.model.City;
 import com.rodolfoguerra.cursomc.model.Client;
 import com.rodolfoguerra.cursomc.model.enums.ClientType;
-import com.rodolfoguerra.cursomc.repositories.AddressRepository;
 import com.rodolfoguerra.cursomc.repositories.ClientRepository;
 import com.rodolfoguerra.cursomc.services.exceptions.DataIntegrityException;
 import com.rodolfoguerra.cursomc.services.exceptions.ObjectNotFoundException;
@@ -24,11 +23,9 @@ public class ClientService {
 
     private final ClientRepository repository;
 
-    private final AddressRepository addressRepository;
 
-    public ClientService(ClientRepository repository, AddressRepository addressRepository) {
+    public ClientService(ClientRepository repository) {
         this.repository = repository;
-        this.addressRepository = addressRepository;
     }
 
     public Client findById(Long id) throws ObjectNotFoundException {
@@ -47,7 +44,6 @@ public class ClientService {
     public Client save(Client client) {
         client.setId(null);
         repository.save(client);
-        addressRepository.saveAll(client.getAddresses());
         return client;
     }
 
