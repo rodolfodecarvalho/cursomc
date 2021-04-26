@@ -1,5 +1,6 @@
 package com.rodolfoguerra.cursomc.model;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.rodolfoguerra.cursomc.model.enums.EstadoPagamento;
 import lombok.*;
 
@@ -11,6 +12,7 @@ import javax.persistence.Entity;
 @ToString
 @EqualsAndHashCode(callSuper = false)
 @Data
+@JsonTypeName("pagamentoComCartao")
 public class PagamentoComCartao extends Pagamento {
 
     private static final long serialVersionUID = 1L;

@@ -43,8 +43,7 @@ public class ClientService {
     @Transactional
     public Client save(Client client) {
         client.setId(null);
-        repository.save(client);
-        return client;
+        return repository.save(client);
     }
 
     public void update(Client client) {

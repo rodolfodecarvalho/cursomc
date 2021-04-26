@@ -2,11 +2,13 @@ package com.rodolfoguerra.cursomc.controllers;
 
 import com.rodolfoguerra.cursomc.model.Pedido;
 import com.rodolfoguerra.cursomc.services.PedidoService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import javax.validation.Valid;
+import java.net.URI;
 
 @RestController
 @RequestMapping("/pedidos")
@@ -22,5 +24,14 @@ public class PedidoController {
     public ResponseEntity<Pedido> findById(@PathVariable(value = "id") final Long id) {
         Pedido pedido = service.findById(id);
         return ResponseEntity.ok(pedido);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Void> save(@Valid @RequestBody Pedido pedido) {
+        pedido = service.save(pedido);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(pedido.getId()).toUri();
+
+        return ResponseEntity.created(uri).build();
     }
 }

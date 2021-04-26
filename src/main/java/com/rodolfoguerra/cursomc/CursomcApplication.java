@@ -50,9 +50,9 @@ public class CursomcApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws ParseException {
-        Product p1 = new Product(null, "Computador", 200.00);
+        Product p1 = new Product(null, "Computador", 2000.00);
         Product p2 = new Product(null, "Impressora", 500.00);
-        Product p3 = new Product(null, "Mouse", 50.00);
+        Product p3 = new Product(null, "Mouse", 80.00);
         Product p4 = new Product(null, "Mesa de escritório", 300.00);
         Product p5 = new Product(null, "Toalha", 50.00);
         Product p6 = new Product(null, "Colcha", 200.00);
