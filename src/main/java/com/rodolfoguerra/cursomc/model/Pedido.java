@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Entity
@@ -46,5 +47,9 @@ public class Pedido implements Serializable {
         this.date = date;
         this.client = client;
         this.enderecoDeEntrega = enderecoDeEntrega;
+    }
+
+    public Optional<Double> getValorTotal() {
+        return itens.stream().map(ItemPedido::getSubTotal).reduce(Double::sum);
     }
 }
