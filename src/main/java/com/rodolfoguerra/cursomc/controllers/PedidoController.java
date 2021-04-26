@@ -12,15 +12,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/pedidos")
 public class PedidoController {
 
-    private final PedidoService pedidoService;
+    private final PedidoService service;
 
-    public PedidoController(PedidoService pedidoService) {
-        this.pedidoService = pedidoService;
+    public PedidoController(PedidoService service) {
+        this.service = service;
     }
 
     @GetMapping(path = {"/{id}"})
     public ResponseEntity<Pedido> findById(@PathVariable(value = "id") final Long id) {
-        Pedido pedido = pedidoService.findById(id);
+        Pedido pedido = service.findById(id);
         return ResponseEntity.ok(pedido);
     }
 }

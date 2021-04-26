@@ -17,10 +17,10 @@ import java.net.URI;
 @RequestMapping("/clients")
 public class ClientController {
 
-    private final ClientService clientService;
+    private final ClientService service;
 
-    public ClientController(ClientService clientService) {
-        this.clientService = clientService;
+    public ClientController(ClientService service) {
+        this.service = service;
     }
 
     @GetMapping(path = {"/page"})
@@ -29,21 +29,21 @@ public class ClientController {
             @RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
             @RequestParam(value = "orderBy", defaultValue = "name") String orderBy,
             @RequestParam(value = "direction", defaultValue = "ASC") String direction) {
-        Page<ClientDTO> list = clientService.findPage(page, linesPerPage, orderBy, direction);
+        Page<ClientDTO> list = service.findPage(page, linesPerPage, orderBy, direction);
         return ResponseEntity.ok(list);
     }
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<Client> findById(@PathVariable(value = "id") final Long id) {
-        Client client = clientService.findById(id);
+        Client client = service.findById(id);
         return ResponseEntity.ok(client);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> save(@Valid @RequestBody ClientNewDTO clientDTO) {
-        Client client = clientService.fromDTO(clientDTO);
-        client = clientService.save(client);
+        Client client = service.fromDTO(clientDTO);
+        client = service.save(client);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(client.getId()).toUri();
 
         return ResponseEntity.created(uri).build();
@@ -51,15 +51,15 @@ public class ClientController {
 
     @PutMapping(value = "{id}")
     public ResponseEntity<Void> update(@Valid @RequestBody ClientDTO clientDTO, @PathVariable(value = "id") final Long id) {
-        Client client = clientService.fromDTO(clientDTO);
+        Client client = service.fromDTO(clientDTO);
         client.setId(id);
-        clientService.update(client);
+        service.update(client);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping(path = {"/{id}"})
     public ResponseEntity<Client> deleteById(@PathVariable(value = "id") final Long id) {
-        clientService.deleteById(id);
+        service.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }

@@ -17,15 +17,15 @@ import java.util.List;
 @RequestMapping("/categories")
 public class CategoryController {
 
-    private final CategoryService categoryService;
+    private final CategoryService service;
 
-    public CategoryController(CategoryService categoryService) {
-        this.categoryService = categoryService;
+    public CategoryController(CategoryService service) {
+        this.service = service;
     }
 
     @GetMapping(path = {"/"})
     public ResponseEntity<List<CategoryDTO>> findAll() {
-        List<CategoryDTO> list = categoryService.findAll();
+        List<CategoryDTO> list = service.findAll();
         return ResponseEntity.ok(list);
     }
 
@@ -35,21 +35,21 @@ public class CategoryController {
             @RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
             @RequestParam(value = "orderBy", defaultValue = "name") String orderBy,
             @RequestParam(value = "direction", defaultValue = "ASC") String direction) {
-        Page<CategoryDTO> list = categoryService.findPage(page, linesPerPage, orderBy, direction);
+        Page<CategoryDTO> list = service.findPage(page, linesPerPage, orderBy, direction);
         return ResponseEntity.ok(list);
     }
 
     @GetMapping(path = {"/{id}"})
     public ResponseEntity<Category> findById(@PathVariable(value = "id") final Long id) {
-        Category category = categoryService.findById(id);
+        Category category = service.findById(id);
         return ResponseEntity.ok(category);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> save(@Valid @RequestBody CategoryDTO categoryDTO) {
-        Category category = categoryService.fromDTO(categoryDTO);
-        category = categoryService.save(category);
+        Category category = service.fromDTO(categoryDTO);
+        category = service.save(category);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(category.getId()).toUri();
 
         return ResponseEntity.created(uri).build();
@@ -57,15 +57,15 @@ public class CategoryController {
 
     @PutMapping(value = "{id}")
     public ResponseEntity<Void> update(@Valid @RequestBody CategoryDTO categoryDTO, @PathVariable(value = "id") final Long id) {
-        Category category = categoryService.fromDTO(categoryDTO);
+        Category category = service.fromDTO(categoryDTO);
         category.setId(id);
-        categoryService.update(category);
+        service.update(category);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping(path = {"/{id}"})
     public ResponseEntity<Category> deleteById(@PathVariable(value = "id") final Long id) {
-        categoryService.deleteById(id);
+        service.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }

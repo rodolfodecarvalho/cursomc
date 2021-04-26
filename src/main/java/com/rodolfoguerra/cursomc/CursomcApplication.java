@@ -50,6 +50,18 @@ public class CursomcApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws ParseException {
+        Product p1 = new Product(null, "Computador", 200.00);
+        Product p2 = new Product(null, "Impressora", 500.00);
+        Product p3 = new Product(null, "Mouse", 50.00);
+        Product p4 = new Product(null, "Mesa de escritório", 300.00);
+        Product p5 = new Product(null, "Toalha", 50.00);
+        Product p6 = new Product(null, "Colcha", 200.00);
+        Product p7 = new Product(null, "TV true color", 1200.00);
+        Product p8 = new Product(null, "Roçadeira", 800.00);
+        Product p9 = new Product(null, "Abajour", 100.00);
+        Product p10 = new Product(null, "Pendente", 180.00);
+        Product p11 = new Product(null, "Shampoo", 90.00);
+
         Category cat1 = new Category(null, "Informática");
         Category cat2 = new Category(null, "Escritório");
         Category cat3 = new Category(null, "Quarto");
@@ -57,23 +69,35 @@ public class CursomcApplication implements CommandLineRunner {
         Category cat5 = new Category(null, "Beleza");
         Category cat6 = new Category(null, "Padaria");
         Category cat7 = new Category(null, "Eletronicos");
-        Category cat8 = new Category(null, "Mercado");
-        Category cat9 = new Category(null, "Cama");
-        Category cat10 = new Category(null, "Telefonia");
-
-        Product p1 = new Product(null, "Computador", 200.00);
-        Product p2 = new Product(null, "Impressora", 500.00);
-        Product p3 = new Product(null, "Mouse", 50.00);
 
         cat1.getProducts().addAll(Arrays.asList(p1, p2, p3));
-        cat2.getProducts().addAll(Collections.singletonList(p2));
+        cat2.getProducts().addAll(Arrays.asList(p2, p4));
 
         p1.getCategories().addAll(Collections.singletonList(cat1));
         p2.getCategories().addAll(Arrays.asList(cat1, cat2));
         p3.getCategories().addAll(Collections.singletonList(cat1));
 
-        categoryRepository.saveAll(Arrays.asList(cat1, cat2, cat3, cat4, cat5, cat6, cat7, cat8, cat9, cat10));
-        productRepository.saveAll(Arrays.asList(p1, p2, p3));
+        cat2.getProducts().addAll(Arrays.asList(p2, p4));
+        cat3.getProducts().addAll(Arrays.asList(p5, p6));
+        cat4.getProducts().addAll(Arrays.asList(p1, p2, p3, p7));
+        cat5.getProducts().addAll(Collections.singletonList(p8));
+        cat6.getProducts().addAll(Arrays.asList(p9, p10));
+        cat7.getProducts().addAll(Collections.singletonList(p11));
+
+        p1.getCategories().addAll(Arrays.asList(cat1, cat4));
+        p2.getCategories().addAll(Arrays.asList(cat1, cat2, cat4));
+        p3.getCategories().addAll(Arrays.asList(cat1, cat4));
+        p4.getCategories().addAll(Collections.singletonList(cat2));
+        p5.getCategories().addAll(Collections.singletonList(cat3));
+        p6.getCategories().addAll(Collections.singletonList(cat3));
+        p7.getCategories().addAll(Collections.singletonList(cat4));
+        p8.getCategories().addAll(Collections.singletonList(cat5));
+        p9.getCategories().addAll(Collections.singletonList(cat6));
+        p10.getCategories().addAll(Collections.singletonList(cat6));
+        p11.getCategories().addAll(Collections.singletonList(cat7));
+
+        categoryRepository.saveAll(Arrays.asList(cat1, cat2, cat3, cat4, cat5, cat6, cat7));
+        productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11));
 
         Estado est1 = new Estado(null, "Minas Gerais");
         Estado est2 = new Estado(null, "São Paulo");
