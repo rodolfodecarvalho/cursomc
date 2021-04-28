@@ -107,7 +107,7 @@ public class DBService {
         estadoRepository.saveAll(Arrays.asList(est1, est2));
         cityRepository.saveAll(Arrays.asList(c1, c2, c3));
 
-        Client cli1 = new Client(null, "Maria", "maria@email", "12345678996", ClientType.PESSOA_FISICA);
+        Client cli1 = new Client(null, "Maria", "rodolfoguerraster@gmail.com", "12345678996", ClientType.PESSOA_FISICA);
 
         Address address1 = new Address(null, "Rua Flores", "123", "casa", "Al", "12.456.879", cli1, c1);
         Address address2 = new Address(null, "Rua Margarida", "4564", "apto", "Ald", "12.456.879", cli1, c2);
