@@ -1,19 +1,20 @@
 package com.rodolfoguerra.cursomc.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @EqualsAndHashCode(of = "id")
 @Data
 public class Pedido implements Serializable {
@@ -51,5 +52,28 @@ public class Pedido implements Serializable {
 
     public Optional<Double> getValorTotal() {
         return itens.stream().map(ItemPedido::getSubTotal).reduce(Double::sum);
+    }
+
+    @Override
+    public String toString() {
+        NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        final StringBuffer sb = new StringBuffer("Pedido{");
+        sb.append("Pedido número: ");
+        sb.append(getId());
+        sb.append(", Instante: ");
+        sb.append(sdf.format(getDate()));
+        sb.append(", Cliente: ");
+        sb.append(getClient().getName());
+        sb.append(", Situação do pagamento: ");
+        sb.append(getPagamento().getEstado().getCode());
+        sb.append("\nDetalhes:\n");
+
+        getItens().forEach(ip -> sb.append(ip.toString()));
+
+        sb.append("Valor total: ");
+        sb.append(getValorTotal());
+
+        return sb.toString();
     }
 }
