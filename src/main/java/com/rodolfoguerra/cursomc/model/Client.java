@@ -2,6 +2,7 @@ package com.rodolfoguerra.cursomc.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rodolfoguerra.cursomc.model.enums.ClientType;
+import com.rodolfoguerra.cursomc.model.enums.Profile;
 import lombok.*;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @NoArgsConstructor
@@ -27,6 +29,7 @@ public class Client implements Serializable {
 
     private String name;
 
+    @Column(unique=true)
     private String email;
 
     private String cpfOrCnpj;
@@ -43,6 +46,10 @@ public class Client implements Serializable {
     @CollectionTable(name = "Phones")
     private Set<String> phones = new HashSet<>();
 
+    @ElementCollection
+    @CollectionTable(name = "Profiles")
+    private Set<Integer> profiles = new HashSet<>();
+
     @OneToMany(mappedBy = "client")
     @JsonIgnore
     private List<Pedido> pedidos = new ArrayList<>();
@@ -55,6 +62,15 @@ public class Client implements Serializable {
         this.cpfOrCnpj = cpfOrCnpj;
         this.type = type == null ? null : type.getCode();
         this.password = password;
+        addProfile(Profile.CLIENT);
+    }
+
+    public Set<Profile> getProfiles() {
+        return profiles.stream().map(Profile::toEnum).collect(Collectors.toSet());
+    }
+
+    public void addProfile(Profile profile) {
+        profiles.add(profile.getCode());
     }
 
     public ClientType getType() {

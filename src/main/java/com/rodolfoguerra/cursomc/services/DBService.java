@@ -3,6 +3,7 @@ package com.rodolfoguerra.cursomc.services;
 import com.rodolfoguerra.cursomc.model.*;
 import com.rodolfoguerra.cursomc.model.enums.ClientType;
 import com.rodolfoguerra.cursomc.model.enums.EstadoPagamento;
+import com.rodolfoguerra.cursomc.model.enums.Profile;
 import com.rodolfoguerra.cursomc.repositories.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -111,16 +112,22 @@ public class DBService {
         estadoRepository.saveAll(Arrays.asList(est1, est2));
         cityRepository.saveAll(Arrays.asList(c1, c2, c3));
 
-        Client cli1 = new Client(null, "Maria", "rodolfoguerraster@gmail.com", "12345678996", ClientType.PESSOA_FISICA, pe.encode("123"));
+        Client cli1 = new Client(null, "Maria", "rodolfoguerraster@gmail.com", "66216689371", ClientType.PESSOA_FISICA, pe.encode("123"));
+        cli1.getPhones().addAll(Arrays.asList("123456", "54645"));
+
+        Client cli2 = new Client(null, "Ana Costa", "rodolfoguerraster1@gmail.com", "66086132020", ClientType.PESSOA_FISICA, pe.encode("123"));
+        cli2.addProfile(Profile.ADMIN);
+        cli2.getPhones().addAll(Arrays.asList("4234234", "234234243"));
 
         Address address1 = new Address(null, "Rua Flores", "123", "casa", "Al", "12.456.879", cli1, c1);
         Address address2 = new Address(null, "Rua Margarida", "4564", "apto", "Ald", "12.456.879", cli1, c2);
+        Address address3 = new Address(null, "Rua Flores", "546", null, "Ald", "12.534.879", cli2, c2);
 
         cli1.getAddresses().addAll(Arrays.asList(address1, address2));
-        cli1.getPhones().addAll(Arrays.asList("123456", "54645"));
+        cli2.getAddresses().addAll(Collections.singletonList(address3));
 
-        clientRepository.save(cli1);
-        addressRepository.saveAll(Arrays.asList(address1, address2));
+        clientRepository.saveAll(Arrays.asList(cli1, cli2));
+        addressRepository.saveAll(Arrays.asList(address1, address2, address3));
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 

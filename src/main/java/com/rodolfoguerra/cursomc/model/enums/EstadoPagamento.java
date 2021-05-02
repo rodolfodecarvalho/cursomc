@@ -5,12 +5,14 @@ import lombok.Getter;
 @Getter
 public enum EstadoPagamento {
 
-    PENDENTE(1), QUITADO(2), CANCELADO(3);
+    PENDENTE(1,"Pendente"), QUITADO(2, "Quitado"), CANCELADO(3, "Cancelado");
 
     private final int code;
+    private String description;
 
-    EstadoPagamento(int code) {
+    EstadoPagamento(int code, String description) {
         this.code = code;
+        this.description = description;
     }
 
     public static EstadoPagamento toEnum(Integer code) {
