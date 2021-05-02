@@ -13,6 +13,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,9 +24,11 @@ public class ClientService {
 
     private final ClientRepository repository;
 
+    private final BCryptPasswordEncoder pe;
 
-    public ClientService(ClientRepository repository) {
+    public ClientService(ClientRepository repository, BCryptPasswordEncoder pe) {
         this.repository = repository;
+        this.pe = pe;
     }
 
     public Client findById(Long id) throws ObjectNotFoundException {
@@ -67,11 +70,11 @@ public class ClientService {
     }
 
     public Client fromDTO(ClientDTO clientDTO) {
-        return new Client(clientDTO.getId(), clientDTO.getName(), clientDTO.getEmail(), null, null);
+        return new Client(clientDTO.getId(), clientDTO.getName(), clientDTO.getEmail(), null, null, null);
     }
 
     public Client fromDTO(ClientNewDTO clientNewDTO) {
-        Client client = new Client(null, clientNewDTO.getName(), clientNewDTO.getEmail(), clientNewDTO.getCpfOrCnpj(), ClientType.toEnum(clientNewDTO.getType()));
+        Client client = new Client(null, clientNewDTO.getName(), clientNewDTO.getEmail(), clientNewDTO.getCpfOrCnpj(), ClientType.toEnum(clientNewDTO.getType()), pe.encode(clientNewDTO.getPassword()));
         City city = new City(clientNewDTO.getCityId(), null, null);
         Address address = new Address(null, clientNewDTO.getLogradouro(), clientNewDTO.getNumber(), clientNewDTO.getComplemento(), clientNewDTO.getBairro(), clientNewDTO.getZipCode(), client, city);
         client.getAddresses().add(address);

@@ -34,6 +34,9 @@ public class ClientNewDTO implements Serializable {
     private Integer type;
 
     @NotEmpty(message = "Required")
+    private String password;
+
+    @NotEmpty(message = "Required")
     private String logradouro;
 
     @NotEmpty(message = "Required")

@@ -4,6 +4,7 @@ import com.rodolfoguerra.cursomc.model.*;
 import com.rodolfoguerra.cursomc.model.enums.ClientType;
 import com.rodolfoguerra.cursomc.model.enums.EstadoPagamento;
 import com.rodolfoguerra.cursomc.repositories.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -32,7 +33,9 @@ public class DBService {
 
     private final ItemPedidoRepository itemPedidoRepository;
 
-    public DBService(CategoryRepository categoryRepository, ProductRepository productRepository, CityRepository cityRepository, EstadoRepository estadoRepository, ClientRepository clientRepository, AddressRepository addressRepository, PedidoRepository pedidoRepository, PagamentoRepository pagamentoRepository, ItemPedidoRepository itemPedidoRepository) {
+    private final BCryptPasswordEncoder pe;
+
+    public DBService(CategoryRepository categoryRepository, ProductRepository productRepository, CityRepository cityRepository, EstadoRepository estadoRepository, ClientRepository clientRepository, AddressRepository addressRepository, PedidoRepository pedidoRepository, PagamentoRepository pagamentoRepository, ItemPedidoRepository itemPedidoRepository, BCryptPasswordEncoder pe) {
         this.categoryRepository = categoryRepository;
         this.productRepository = productRepository;
         this.cityRepository = cityRepository;
@@ -42,6 +45,7 @@ public class DBService {
         this.pedidoRepository = pedidoRepository;
         this.pagamentoRepository = pagamentoRepository;
         this.itemPedidoRepository = itemPedidoRepository;
+        this.pe = pe;
     }
 
     public void instantiateTestDatabase() throws ParseException {
@@ -107,7 +111,7 @@ public class DBService {
         estadoRepository.saveAll(Arrays.asList(est1, est2));
         cityRepository.saveAll(Arrays.asList(c1, c2, c3));
 
-        Client cli1 = new Client(null, "Maria", "rodolfoguerraster@gmail.com", "12345678996", ClientType.PESSOA_FISICA);
+        Client cli1 = new Client(null, "Maria", "rodolfoguerraster@gmail.com", "12345678996", ClientType.PESSOA_FISICA, pe.encode("123"));
 
         Address address1 = new Address(null, "Rua Flores", "123", "casa", "Al", "12.456.879", cli1, c1);
         Address address2 = new Address(null, "Rua Margarida", "4564", "apto", "Ald", "12.456.879", cli1, c2);
