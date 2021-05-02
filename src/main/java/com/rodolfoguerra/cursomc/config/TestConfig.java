@@ -6,6 +6,8 @@ import com.rodolfoguerra.cursomc.services.MockEmailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.thymeleaf.TemplateEngine;
 
 import java.text.ParseException;
 
@@ -15,8 +17,14 @@ public class TestConfig {
 
     private final DBService service;
 
-    public TestConfig(DBService service) {
+    private final TemplateEngine templateEngine;
+
+    private final JavaMailSender javaMailSender;
+
+    public TestConfig(DBService service, TemplateEngine templateEngine, JavaMailSender javaMailSender) {
         this.service = service;
+        this.templateEngine = templateEngine;
+        this.javaMailSender = javaMailSender;
     }
 
     @Bean
@@ -27,6 +35,6 @@ public class TestConfig {
 
     @Bean
     public EmailService emailService (){
-        return new MockEmailService();
+        return new MockEmailService(templateEngine, javaMailSender);
     }
 }
