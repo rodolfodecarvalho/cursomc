@@ -6,7 +6,10 @@ import com.rodolfoguerra.cursomc.model.Address;
 import com.rodolfoguerra.cursomc.model.City;
 import com.rodolfoguerra.cursomc.model.Client;
 import com.rodolfoguerra.cursomc.model.enums.ClientType;
+import com.rodolfoguerra.cursomc.model.enums.Profile;
 import com.rodolfoguerra.cursomc.repositories.ClientRepository;
+import com.rodolfoguerra.cursomc.security.UserSS;
+import com.rodolfoguerra.cursomc.services.exceptions.AuthorizationException;
 import com.rodolfoguerra.cursomc.services.exceptions.DataIntegrityException;
 import com.rodolfoguerra.cursomc.services.exceptions.ObjectNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -32,6 +35,12 @@ public class ClientService {
     }
 
     public Client findById(Long id) throws ObjectNotFoundException {
+        UserSS user = UserService.authenticated();
+
+        if (user==null || !user.hasRole(Profile.ADMIN) && !id.equals(user.getId())) {
+            throw new AuthorizationException("Access Denied");
+        }
+
         Optional<Client> client = repository.findById(id);
         return client.orElseThrow(() -> new ObjectNotFoundException("Client not found Id:" + id + ", Type: " + Client.class.getTypeName()));
     }
