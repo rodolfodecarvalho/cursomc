@@ -7,6 +7,7 @@ import com.rodolfoguerra.cursomc.services.ClientService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -23,6 +24,7 @@ public class ClientController {
         this.service = service;
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping(path = {"/page"})
     public ResponseEntity<Page<ClientDTO>> findPage(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
@@ -57,6 +59,7 @@ public class ClientController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping(path = {"/{id}"})
     public ResponseEntity<Client> deleteById(@PathVariable(value = "id") final Long id) {
         service.deleteById(id);
