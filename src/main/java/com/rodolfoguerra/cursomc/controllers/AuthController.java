@@ -3,6 +3,7 @@ package com.rodolfoguerra.cursomc.controllers;
 import com.rodolfoguerra.cursomc.security.JWTUtil;
 import com.rodolfoguerra.cursomc.security.UserSS;
 import com.rodolfoguerra.cursomc.services.UserService;
+import com.rodolfoguerra.cursomc.services.exceptions.AuthorizationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,9 @@ public class AuthController {
     @PostMapping(value = "/refresh_token")
     public ResponseEntity<Void> refreshToken(HttpServletResponse response) {
         UserSS user = UserService.authenticated();
+        if (user == null) {
+            throw new AuthorizationException("Acesso negado");
+        }
         String token = jwtUtil.generateToken(user.getUsername());
         response.addHeader("Authorization", "Bearer " + token);
         response.addHeader("access-control-expose-headers", "Authorization");
