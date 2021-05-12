@@ -2,6 +2,7 @@ package com.rodolfoguerra.cursomc.controllers;
 
 import com.rodolfoguerra.cursomc.model.Pedido;
 import com.rodolfoguerra.cursomc.services.PedidoService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,5 +34,15 @@ public class PedidoController {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(pedido.getId()).toUri();
 
         return ResponseEntity.created(uri).build();
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<Pedido>> findPage(
+            @RequestParam(value="page", defaultValue="0") Integer page,
+            @RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage,
+            @RequestParam(value="orderBy", defaultValue="date") String orderBy,
+            @RequestParam(value="direction", defaultValue="DESC") String direction) {
+        Page<Pedido> list = service.findPage(page, linesPerPage, orderBy, direction);
+        return ResponseEntity.ok().body(list);
     }
 }

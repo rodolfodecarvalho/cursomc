@@ -1,5 +1,6 @@
 package com.rodolfoguerra.cursomc.services;
 
+import com.rodolfoguerra.cursomc.model.Client;
 import com.rodolfoguerra.cursomc.model.PagamentoComBoleto;
 import com.rodolfoguerra.cursomc.model.Pedido;
 import com.rodolfoguerra.cursomc.model.Product;
@@ -7,7 +8,12 @@ import com.rodolfoguerra.cursomc.model.enums.EstadoPagamento;
 import com.rodolfoguerra.cursomc.repositories.ItemPedidoRepository;
 import com.rodolfoguerra.cursomc.repositories.PagamentoRepository;
 import com.rodolfoguerra.cursomc.repositories.PedidoRepository;
+import com.rodolfoguerra.cursomc.security.UserSS;
+import com.rodolfoguerra.cursomc.services.exceptions.AuthorizationException;
 import com.rodolfoguerra.cursomc.services.exceptions.ObjectNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -68,5 +74,15 @@ public class PedidoService {
         emailService.sendOrderConfirmationHtmlEmail(pedido);
 
         return pedido;
+    }
+
+    public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+        UserSS user = UserService.authenticated();
+        if (user == null) {
+            throw new AuthorizationException("Acesso negado");
+        }
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        Client client =  clientService.findById(user.getId());
+        return repository.findByClient(client, pageRequest);
     }
 }
