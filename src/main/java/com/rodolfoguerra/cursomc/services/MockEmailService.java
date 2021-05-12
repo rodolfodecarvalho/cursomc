@@ -10,7 +10,6 @@ import javax.mail.internet.MimeMessage;
 @Log4j2
 public class MockEmailService extends AbstractEmailService{
 
-
     public MockEmailService(TemplateEngine templateEngine, JavaMailSender javaMailSender) {
         super(templateEngine, javaMailSender);
     }

@@ -1,5 +1,6 @@
 package com.rodolfoguerra.cursomc.services;
 
+import com.rodolfoguerra.cursomc.model.Client;
 import com.rodolfoguerra.cursomc.model.Pedido;
 import org.springframework.mail.SimpleMailMessage;
 
@@ -14,4 +15,6 @@ public interface EmailService {
     void sendOrderConfirmationHtmlEmail(Pedido pedido);
 
     void sendHtmlEmail(MimeMessage msg);
+
+    void sendNewPasswordEmail(Client client, String newPass);
 }
