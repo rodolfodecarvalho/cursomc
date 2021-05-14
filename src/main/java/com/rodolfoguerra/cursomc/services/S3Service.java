@@ -2,6 +2,7 @@ package com.rodolfoguerra.cursomc.services;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.rodolfoguerra.cursomc.services.exceptions.FileException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class S3Service {
             String contentType = multipartFile.getContentType();
             return uploadFile(is, fileName, contentType);
         } catch (IOException e) {
-            throw new RuntimeException("Error de IO " + e.getMessage());
+            throw new FileException("Error de IO " + e.getMessage());
         }
     }
 
@@ -45,7 +46,7 @@ public class S3Service {
             log.info("Finalizado");
             return s3client.getUrl(bucketName,fileName).toURI();
         } catch (URISyntaxException e) {
-            throw new RuntimeException("Error ao conveter URL para URI");
+            throw new FileException("Error ao conveter URL para URI");
         }
     }
 }
