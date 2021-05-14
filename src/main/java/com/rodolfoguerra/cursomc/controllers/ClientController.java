@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -64,5 +65,12 @@ public class ClientController {
     public ResponseEntity<Client> deleteById(@PathVariable(value = "id") final Long id) {
         service.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping(value = "picture")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Void> uploadProfilePicture(@RequestParam(name = "file") MultipartFile multipartFile) {
+        URI uri = service.uploadProfilePicture(multipartFile);
+        return ResponseEntity.created(uri).build();
     }
 }

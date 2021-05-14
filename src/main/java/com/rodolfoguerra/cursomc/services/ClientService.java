@@ -19,7 +19,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.net.URI;
 import java.util.Optional;
 
 @Service
@@ -29,15 +31,18 @@ public class ClientService {
 
     private final BCryptPasswordEncoder pe;
 
-    public ClientService(ClientRepository repository, BCryptPasswordEncoder pe) {
+    private final S3Service s3Service;
+
+    public ClientService(ClientRepository repository, BCryptPasswordEncoder pe, S3Service s3Service) {
         this.repository = repository;
         this.pe = pe;
+        this.s3Service = s3Service;
     }
 
     public Client findById(Long id) throws ObjectNotFoundException {
         UserSS user = UserService.authenticated();
 
-        if (user==null || !user.hasRole(Profile.ADMIN) && !id.equals(user.getId())) {
+        if (user == null || !user.hasRole(Profile.ADMIN) && !id.equals(user.getId())) {
             throw new AuthorizationException("Access Denied");
         }
 
@@ -96,5 +101,9 @@ public class ClientService {
         }
 
         return client;
+    }
+
+    public URI uploadProfilePicture(MultipartFile multipartFile) {
+        return s3Service.uploadFile(multipartFile);
     }
 }
