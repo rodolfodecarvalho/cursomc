@@ -54,8 +54,6 @@ public class Client implements Serializable {
     @JsonIgnore
     private List<Pedido> pedidos = new ArrayList<>();
 
-    private String imageUrl;
-
     public Client(Long id, String name, String email, String cpfOrCnpj, ClientType type, String password) {
         super();
         this.id = id;

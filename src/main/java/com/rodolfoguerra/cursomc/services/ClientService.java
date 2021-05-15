@@ -12,6 +12,7 @@ import com.rodolfoguerra.cursomc.security.UserSS;
 import com.rodolfoguerra.cursomc.services.exceptions.AuthorizationException;
 import com.rodolfoguerra.cursomc.services.exceptions.DataIntegrityException;
 import com.rodolfoguerra.cursomc.services.exceptions.ObjectNotFoundException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.Optional;
 
@@ -33,10 +35,16 @@ public class ClientService {
 
     private final S3Service s3Service;
 
-    public ClientService(ClientRepository repository, BCryptPasswordEncoder pe, S3Service s3Service) {
+    private final ImageService imageService;
+
+    @Value("${img.prefix.client.profile}")
+    private String prefix;
+
+    public ClientService(ClientRepository repository, BCryptPasswordEncoder pe, S3Service s3Service, ImageService imageService) {
         this.repository = repository;
         this.pe = pe;
         this.s3Service = s3Service;
+        this.imageService = imageService;
     }
 
     public Client findById(Long id) throws ObjectNotFoundException {
@@ -110,12 +118,9 @@ public class ClientService {
             throw new AuthorizationException("Access Denied");
         }
 
-        URI uri = s3Service.uploadFile(multipartFile);
+        BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
+        String fileName = prefix + user.getId() + ".jpg";
 
-        Client client = findById(user.getId());
-        client.setImageUrl(uri.toString());
-        repository.save(client);
-
-        return uri;
+        return s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");
     }
 }
