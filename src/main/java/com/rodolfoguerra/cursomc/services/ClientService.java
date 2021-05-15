@@ -40,6 +40,9 @@ public class ClientService {
     @Value("${img.prefix.client.profile}")
     private String prefix;
 
+    @Value("${img.profile.size}")
+    private Integer size;
+
     public ClientService(ClientRepository repository, BCryptPasswordEncoder pe, S3Service s3Service, ImageService imageService) {
         this.repository = repository;
         this.pe = pe;
@@ -119,6 +122,9 @@ public class ClientService {
         }
 
         BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
+        jpgImage = imageService.cropSquare(jpgImage);
+        jpgImage = imageService.resize(jpgImage, size);
+
         String fileName = prefix + user.getId() + ".jpg";
 
         return s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");
