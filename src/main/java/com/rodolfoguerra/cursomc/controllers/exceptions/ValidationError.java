@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Data
@@ -21,8 +20,8 @@ public class ValidationError extends StandardError implements Serializable {
     private List<FieldMessage> errors = new ArrayList<>();
 
 
-    public ValidationError(Integer status, String msg, Date timeStamp) {
-        super(status, msg, timeStamp);
+    public ValidationError(Long timestamp, Integer status, String error, String message, String path) {
+        super(timestamp, status, error, message, path);
     }
 
     public void addError(String name, String message) {

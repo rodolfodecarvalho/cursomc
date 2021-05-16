@@ -5,7 +5,10 @@ import com.rodolfoguerra.cursomc.dto.EstadoDTO;
 import com.rodolfoguerra.cursomc.services.CityService;
 import com.rodolfoguerra.cursomc.services.EstadoService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -22,7 +25,7 @@ public class EstadoController {
     }
 
     @GetMapping(path = "/")
-    public ResponseEntity<List<EstadoDTO>> fndAll(){
+    public ResponseEntity<List<EstadoDTO>> findAll(){
         List<EstadoDTO> list = service.findAll();
 
         return ResponseEntity.ok(list);
