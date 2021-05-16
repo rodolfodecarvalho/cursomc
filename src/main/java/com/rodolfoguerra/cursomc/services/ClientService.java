@@ -61,6 +61,20 @@ public class ClientService {
         return client.orElseThrow(() -> new ObjectNotFoundException("Client not found Id:" + id + ", Type: " + Client.class.getTypeName()));
     }
 
+    public Client findByEmail(String email) {
+        UserSS user = UserService.authenticated();
+        if (user == null || !user.hasRole(Profile.ADMIN) && !email.equals(user.getUsername())) {
+            throw new AuthorizationException("Acesso negado");
+        }
+
+        Client obj = repository.findByEmail(email);
+        if (obj == null) {
+            throw new ObjectNotFoundException(
+                    "Objeto não encontrado! Id: " + user.getId() + ", Tipo: " + Client.class.getName());
+        }
+        return obj;
+    }
+
     public Page<ClientDTO> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
 
